@@ -1,0 +1,7 @@
+https://patient.simplex48.ru/api/Web/freedaysmedic/10/15/1/16
+ФИО , телефон дата рождения - в конце
+сначала получить спецциальность, потом филиал, 
+вынести запросы в переменные
+https://patient.simplex48.ru/api/Web/allmedicdesc/1/1/2
+
+десерилизация

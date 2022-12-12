@@ -1,0 +1,62 @@
+{
+	"forms": [
+		{
+			"name": "new_record_form",
+			"first_field": "new_record_doctor",
+			"end_handler": "new_record_end",
+			"fields": {
+				"new_record_doctor" : {
+					"message": "NOT USED HERE",
+					"validation_error": "Должность должна состоять как минимум из 3 символов",
+					"next_field":"new_record_place",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_doctor_buttons"
+				},
+				"new_record_place" : {
+					"message": "NOT USED HERE",
+					"validation_error": "Название поликлиники должно состоять как минимум из 3 символов",
+					"next_field":"new_record_doct_name",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_place_buttons"
+					
+				},
+				"new_record_doct_name" : {
+					"message": "NOT USED HERE",
+					"validation_error": "ФИО должно состоять как минимум из 3 символов",
+					"next_field":"new_record_doct_date",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_doct_name"
+				},
+				"new_record_doct_date" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"new_record_doct_time",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_doct_date"
+				},
+				"new_record_doct_time" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_doct_time"
+				}
+			}
+		}
+	]
+}
