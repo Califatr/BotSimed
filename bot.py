@@ -73,68 +73,49 @@ def new_record_doct_name(user_id):
         if i < len(response.json()) and i%2 == 0:
             keyboard.add_line()
         i+=1
+        if i == 18:
+            break
     keyboard.add_line()
-    keyboard.add_button("К любому", color=VkKeyboardColor.PRIMARY)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Выберете ФИО врача, к которому хотите записаться:", keyboard)
 
 def new_record_doct_date(user_id):
     doct_name = forms.user_data[user_id]["new_record_form"]["new_record_doct_name"]
-    if doct_name != "К любому":
-        print(doct_name)
-        url = "https://patient.simplex48.ru/api/Web/allmedic/1/"+str(forms.user_data[user_id]["new_record_form"]["bra_id"])+"/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])
-        print(url)
-        response = requests.request("GET", url)  
-        work_id = 0 #поиск айди врача по по имени
-        for element in response.json():
-            if element["name"] == doct_name:
-                work_id = element["id"]
-        forms.user_data[user_id]["new_record_form"]["work_id"] = work_id 
-        print (work_id)
-        url = "https://patient.simplex48.ru/api/Web/workingdays/1/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])+"/"+str(forms.user_data[user_id]["new_record_form"]["bra_id"])+"/"+str(work_id)
-        response = requests.request("GET", url)
-        print (url)
-        if len(response.json()) != 0:
-            keyboard = VkKeyboard(one_time=True)
-            i = 1
-            for date in reversed(response.json()):
-                keyboard.add_button(date, color=VkKeyboardColor.POSITIVE)
-                if i < len(response.json())  and i%3 == 0:
-                    keyboard.add_line()
-                i+=1
-                if i == 12:
-                    break
-            keyboard.add_line()
-            #print(list(date))
-            keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-            send_message(user_id, "Выберете дату:", keyboard)
-        else:
-            send_message(user_id, "Записи к этому врачу нет. Напишите в чат начать и выберете другого врача")
-    if doct_name == "К любому":
-        url = "https://patient.simplex48.ru/api/Web/freedaysallmedic/1/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])+"/"+str(forms.user_data[user_id]["new_record_form"]["bra_id"])
-        response = requests.request("GET", url)
-        print (url)
-        if len(response.json()) != 0:
-            keyboard = VkKeyboard(one_time=True)
-            i = 1
-            buttondate = "ваша дата"
 
-            for element in response.json():
-                buttondate = str(element["FreeDay"])
-                buttondate = buttondate[:-9]
-                keyboard.add_button(buttondate, color=VkKeyboardColor.POSITIVE)
-                if i < len(response.json())  and i%3 == 0:
-                    keyboard.add_line()
-                i+=1
-                if i == 14:
-                    break
-            keyboard.add_line()
-            #print(list(date))
-            keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-            send_message(user_id, "Выберете дату:", keyboard)
-        else:
-            send_message(user_id, "Свободных дат для записи нет. Напишите в чат Начать и выберете другого врача, если это необходимо ")
-
+    print(doct_name)
+    url = "https://patient.simplex48.ru/api/Web/allmedic/1/"+str(forms.user_data[user_id]["new_record_form"]["bra_id"])+"/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])
+    print(url)
+    response = requests.request("GET", url)  
+    work_id = 0 #поиск айди врача по по имени
+    for element in response.json():
+        if element["name"] == doct_name:
+            work_id = element["id"]
+    forms.user_data[user_id]["new_record_form"]["work_id"] = work_id 
+    print (work_id)
+    url = "https://patient.simplex48.ru/api/Web/workingdays/1/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])+"/"+str(forms.user_data[user_id]["new_record_form"]["bra_id"])+"/"+str(work_id)
+    response = requests.request("GET", url)
+    print (url)
+    if len(response.json()) != 0:
+        keyboard = VkKeyboard(one_time=True)
+        i = 1
+        for date in reversed(response.json()):
+            keyboard.add_button(date, color=VkKeyboardColor.POSITIVE)
+            if i < len(response.json())  and i%3 == 0:
+                keyboard.add_line()
+            i+=1
+            if i == 12:
+                break
+        keyboard.add_line()
+        #print(list(date))
+        keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+        send_message(user_id, "Выберете дату:", keyboard)
+    else:
+        keyboard = VkKeyboard(one_time=True)
+        keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
+        send_message(user_id, "Свободных дат для записи нет. Напишите в чат Начать и выберете другого врача, если это необходимо", keyboard)
+            
 def new_record_doct_time(user_id):
     bra_id = forms.user_data[user_id]["new_record_form"]["bra_id"]
     doct_id = forms.user_data[user_id]["new_record_form"]["doct_id"]
