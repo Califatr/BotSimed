@@ -240,10 +240,26 @@ def new_record_doct_time(user_id):
     jsonstring = json.loads(response.text)
     root = Root.from_dict(jsonstring)
     #print(root.workers)
+    
     for worker in root.workers:
         for cell in worker.schedule[0].cells:
             print(cell.time_start)
-    print(len(worker.schedule[0].cells))   
+    print(len(worker.schedule[0].cells))
+    if len(worker.schedule[0].cells) != 0:
+            keyboard = VkKeyboard(one_time=True)
+            i = 1
+            for worker in root.workers:
+                for cell in worker.schedule[0].cells:
+                    keyboard.add_button(cell.time_start, color=VkKeyboardColor.POSITIVE)
+                    if i < len(worker.schedule[0].cells)  and i%4 == 0:
+                        keyboard.add_line()
+                    i+=1
+                    if i == 18:
+                        break
+                   
+            #print(list(date))
+            keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+            send_message(user_id, "Выберете дату:", keyboard)   
     
 
 
