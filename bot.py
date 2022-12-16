@@ -1,8 +1,6 @@
-import requests
 from typing import List
 from typing import Any
 from dataclasses import dataclass
-import json
 import json
 from datetime import datetime
 import vk_api
@@ -131,7 +129,7 @@ def new_record_doct_time(user_id):
     headers = {"content-type": "application/json"}
     print(payload)
     response = requests.request("POST", url, data=payload, headers=headers) 
-
+    print(response)
 
 
     @dataclass
@@ -222,15 +220,12 @@ def new_record_doct_time(user_id):
     root = Root.from_dict(jsonstring)
     #print(root.workers)
     
-    for worker in root.workers:
-        for cell in worker.schedule[0].cells:
-            print(cell.time_start)
-    print(len(worker.schedule[0].cells))
     if len(worker.schedule[0].cells) != 0:
             keyboard = VkKeyboard(one_time=True)
             i = 1
             for worker in root.workers:
                 for cell in worker.schedule[0].cells:
+                    
                     keyboard.add_button(cell.time_start, color=VkKeyboardColor.POSITIVE)
                     if i < len(worker.schedule[0].cells)  and i%4 == 0:
                         keyboard.add_line()
@@ -240,7 +235,7 @@ def new_record_doct_time(user_id):
                    
             #print(list(date))
             keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-            send_message(user_id, "Выберете дату:", keyboard)   
+            send_message(user_id, "Выберете время:", keyboard)   
     
 
 
