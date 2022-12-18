@@ -48,6 +48,7 @@ def new_record_place_buttons(user_id):
             keyboard.add_line()
         i+=1
     keyboard.add_line()
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Выберете поликлиннику, в которую хотите записаться:", keyboard)
 def new_record_doct_name(user_id):  
@@ -218,32 +219,35 @@ def new_record_doct_time(user_id):
 
     jsonstring = json.loads(response.text)
     root = Root.from_dict(jsonstring)
-    #print(root.workers)
+    print(response.text)
     
-    if len(worker.schedule[0].cells) != 0:
-            keyboard = VkKeyboard(one_time=True)
-            i = 1
-            for worker in root.workers:
-                for cell in worker.schedule[0].cells:
-                    
-                    keyboard.add_button(cell.time_start, color=VkKeyboardColor.POSITIVE)
-                    if i < len(worker.schedule[0].cells)  and i%4 == 0:
-                        keyboard.add_line()
-                    i+=1
-                    if i == 18:
-                        break
-                   
-            #print(list(date))
-            keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-            send_message(user_id, "Выберете время:", keyboard)   
     
+    keyboard = VkKeyboard(one_time=True)
+    i = 1
+    for worker in root.workers:
+        for cell in worker.schedule[0].cells:
+            if cell.free != 'False':
+                keyboard.add_button(cell.time_start, color=VkKeyboardColor.POSITIVE)
+            if i < len(worker.schedule[0].cells)  and i%4 == 0:
+                keyboard.add_line()
+            i+=1
+            if i == 18:
+                break   
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)     
+    keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+    send_message(user_id, "Выберете время:", keyboard)   
+    
+def new_record_client_name(user_id):
+    send_message(user_id, "Введите ваше полное имя:")
 
+def new_record_client_lastname(user_id):
+    send_message(user_id, "Введите вашу фамилию:")
 
+def new_record_client_middlename(user_id):
+    send_message(user_id, "Введите ваше Отчество:")
 
-
-
-
-
+def new_record_client_phone(user_id):
+    send_message(user_id, "Введите ваш номер телефона, начиная с +7:")
 
 
 def new_record_end(message):
@@ -289,9 +293,12 @@ forms.custom_actions = { #Здесь мы делаем словарь, в кот
     "new_record_place_buttons":new_record_place_buttons,
     "new_record_doct_name":new_record_doct_name,
     "new_record_doct_date": new_record_doct_date,
-    "new_record_doct_time": new_record_doct_time
+    "new_record_doct_time": new_record_doct_time,
+    "new_record_client_lastname": new_record_client_lastname,
+    "new_record_client_name": new_record_client_name,
+    "new_record_client_middlename": new_record_client_middlename,
+    "new_record_client_phone": new_record_client_phone
 }
-
 
 
 

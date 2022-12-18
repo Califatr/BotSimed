@@ -49,12 +49,52 @@
 				"new_record_doct_time" : {
 					"message": "NOT USED HERE",
 					"validation_error": "TODO",
-					"next_field":"",
+					"next_field":"new_record_client_lastname",
 					"field_data": {
 						"type":"string",
 						"validation":".{3,}"
 					},
 					"custom_action":"new_record_doct_time"
+				},
+				"new_record_client_lastname" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"new_record_client_name",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_client_lastname"
+				},
+				"new_record_client_name" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"new_record_client_middlename",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_client_name"
+				},
+				"new_record_client_middlename" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"new_record_client_phone",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_client_middlename"
+				},
+				"new_record_client_phone" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_client_phone"
 				}
 			}
 		}
