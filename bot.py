@@ -48,7 +48,6 @@ def new_record_place_buttons(user_id):
             keyboard.add_line()
         i+=1
     keyboard.add_line()
-    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Выберете поликлиннику, в которую хотите записаться:", keyboard)
 def new_record_doct_name(user_id):  
