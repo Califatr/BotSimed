@@ -17,12 +17,16 @@ def new_record_doctor_buttons(user_id):
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
     i = 1
+    count_rows = 1
     for element in response.json():
         doclist+=(element["name"])+"\n"
         keyboard.add_button(element["name"],color=VkKeyboardColor.POSITIVE)
         if i < len(response.json()) and i%2 == 0:
             keyboard.add_line()
+            count_rows +=1
         i+=1
+        if count_rows == 9:
+            break
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "К какому врачу из списка желаете записаться.", keyboard)
 
@@ -41,12 +45,16 @@ def new_record_place_buttons(user_id):
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
     i = 1
+    count_rows = 1
     for element in response.json():
         bralist+=element["name"]+"\n"
         keyboard.add_button(element["name"], color=VkKeyboardColor.POSITIVE)
         if i < len(response.json()) and i%2 == 0:
             keyboard.add_line()
+            count_rows+=1
         i+=1
+        if count_rows == 9:
+            break
     keyboard.add_line()
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Выберете поликлиннику, в которую хотите записаться:", keyboard)
@@ -65,13 +73,15 @@ def new_record_doct_name(user_id):
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
     i = 1
+    count_rows = 1
     for element in response.json():
         namelist+=element["name"]+"\n"
         keyboard.add_button(element["name"], color=VkKeyboardColor.POSITIVE)
         if i < len(response.json()) and i%2 == 0:
             keyboard.add_line()
+            count_rows+-1
         i+=1
-        if i == 18:
+        if count_rows == 9:
             break
     keyboard.add_line()
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
@@ -97,12 +107,14 @@ def new_record_doct_date(user_id):
     if len(response.json()) != 0:
         keyboard = VkKeyboard(one_time=True)
         i = 1
+        count_rows = 1
         for date in reversed(response.json()):
             keyboard.add_button(date, color=VkKeyboardColor.POSITIVE)
-            if i < len(response.json())  and i%3 == 0:
+            if i < len(response.json()) and i%4 == 0:
                 keyboard.add_line()
+                count_rows +=1
             i+=1
-            if i == 12:
+            if count_rows == 9:
                 break
         keyboard.add_line()
         #print(list(date))
@@ -125,7 +137,6 @@ def new_record_doct_time(user_id):
     print(doct_date)
     url = "https://patient.simplex48.ru/api/Web/WorkerCells/"
     payload = "{medorg_id:1,\nbranch_id:"+str(bra_id)+",\nworker_id:"+str(work_id)+",\ndoctor_id:"+str(doct_id)+",\ndate_start:'"+str(doct_date)+"',\ndate_end:'"+str(doct_date)+"',\nreception_kind:0}"
-    #payload = "{medorg_id:1,\nbranch_id:1,\nworker_id:8481,\ndoctor_id:87,\ndate_start:'2022-11-28',\ndate_end:'2022-11-28',\nreception_kind:0}"
     headers = {"content-type": "application/json"}
     print(payload)
     response = requests.request("POST", url, data=payload, headers=headers) 
@@ -223,16 +234,19 @@ def new_record_doct_time(user_id):
     
     keyboard = VkKeyboard(one_time=True)
     i = 1
+    count_rows = 1
     for worker in root.workers:
         for cell in worker.schedule[0].cells:
             if cell.free != 'False':
                 keyboard.add_button(cell.time_start, color=VkKeyboardColor.POSITIVE)
             if i < len(worker.schedule[0].cells)  and i%4 == 0:
                 keyboard.add_line()
+                count_rows+=1
             i+=1
-            if i == 18:
+            if count_rows == 9:
                 break   
-    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)     
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
+    keyboard.add_line()     
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Выберете время:", keyboard)   
     
@@ -248,9 +262,53 @@ def new_record_client_middlename(user_id):
 def new_record_client_phone(user_id):
     send_message(user_id, "Введите ваш номер телефона, начиная с +7:")
 
+def new_record_client_birth(user_id):
+    send_message(user_id, "Дату рождения, в формате ГГГГ-ММ-ДД, например 2000-01-01") 
 
 def new_record_end(message):
     send_message(message.user_id, str(forms.user_data[message.user_id]))
+    new_record_end_end(message)
+
+
+
+
+#TODO 
+def new_record_end_end(message):
+    user_data = forms.user_data[message.user_id]["new_record_form"]
+    print(user_data)
+    
+    payload = {
+    "medorg_id":1,
+    "doct_id":user_data["doct_id"],
+    "bra_id":user_data["bra_id"],
+    "work_id":user_data["work_id"],
+    "date":user_data["new_record_doct_date"],
+    "time_interval": str({user_data["new_record_doct_time"]}) + "-" + str({user_data["new_record_doct_time"]}),
+    "name":user_data["new_record_client_name"],
+    "phone":user_data["new_record_client_phone"],
+    "seocode": "вот тут не понял",
+    "firstname":user_data["new_record_client_name"],
+    "middlename":user_data["new_record_client_middlename"],
+    "lastname":user_data["new_record_client_lastname"],
+    "birthday": user_data["new_record_client_birth"],
+    }
+    url = "http://patient.simplex48.ru:81/token"
+    payload='grant_type=password&username=vk&password=vkP%40ssw0rd'
+    headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': '.AspNet.Cookies=tfLCNd98hiJrl7Bz8LogNkISEZtEtVaatGCh3M4AMOHCUidovrYoJPakcl0K9a92CmBGE1KUKaAmAlSLvmYoCS5gq3Omi3F465b8qGtV2TyFCZYSWeiwZgJiAtHXMk2UIJh-YWaxWg6RA5IVGIDkyyseuBIYotkH4w-7cIpbXgti4Sz7BxIws0THSwqbRJWNAuCydEJ01x3bbDPD6grtTNzFfUiZfC_llRuD1k7WkymsXSFrwukR4hXrh5ALlFFacaaZxHyF2701TAhCq-bc0daLjXeNGFzez1ye6GbSFnkvziCuuLXDb6i0npYWUGREbbkNnrZyrU1umTUGfRhlLkR9PJcv8U3-yj-B4SEU9dHiitp8-jkhhJGdtZk64FXm7Gi3A2hs7qq5P-kdSv9f2nat-5zjC07c0ds2bIXEBwsHpkyfD0s9cQ4k0dxqdZMPKXEfFjDX1xLAz4qgqkfPWQ'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    access_token = "XXXTOKENXXX"
+    for element in response.json():
+        access_token =element["access_token"]
+    #send_message(message.user_id, str(payload))
+    url = "http://patient.simplex48.ru:81/api/Web/recordDirect/"
+    payload = json.dumps(payload, sort_keys=True, indent=1)
+    headers = {"content-type": "application/json" "Authorization: Bearer " + str(access_token)}
+    response = requests.request("POST", url, data=payload, headers=headers)
+    send_message(message.user_id, str(response.text))
 
 
 
@@ -275,7 +333,7 @@ def send_message(user_id, message, keyboard=None):
 
 
 """
-Импортируем мой модуль форм
+
 """
 import forms
 forms.send_message = send_message #Здесь мы говорим моему модулю какую именно функцию использовать для отправки сообщения

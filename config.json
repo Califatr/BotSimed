@@ -89,12 +89,22 @@
 				"new_record_client_phone" : {
 					"message": "NOT USED HERE",
 					"validation_error": "TODO",
-					"next_field":"",
+					"next_field":"new_record_client_birth",
 					"field_data": {
 						"type":"string",
 						"validation":".{3,}"
 					},
 					"custom_action":"new_record_client_phone"
+				},
+				"new_record_client_birth" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"",
+					"field_data": {
+						"type":"string",
+						"validation":".{3,}"
+					},
+					"custom_action":"new_record_client_birth"
 				}
 			}
 		}
