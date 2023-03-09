@@ -265,7 +265,7 @@ def new_record_client_phone(user_id):
     send_message(user_id, "Введите ваш номер телефона, начиная с +7:")
 
 def new_record_client_birth(user_id):
-    send_message(user_id, "Дату рождения, в формате ГГГГ-ММ-ДД, например 2000-01-01") 
+    send_message(user_id, "Введите Дату рождения, в формате ГГГГ-ММ-ДД, например 2000-01-01") 
 
 def new_record_end(message):
     send_message(message.user_id, str(forms.user_data[message.user_id]))
@@ -356,7 +356,8 @@ forms.custom_actions = { #Здесь мы делаем словарь, в кот
     "new_record_client_lastname": new_record_client_lastname,
     "new_record_client_name": new_record_client_name,
     "new_record_client_middlename": new_record_client_middlename,
-    "new_record_client_phone": new_record_client_phone
+    "new_record_client_phone": new_record_client_phone,
+    "new_record_client_birth": new_record_client_birth
 }
 
 
