@@ -302,9 +302,7 @@ def new_record_end_end(message):
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
-    access_token = "XXXTOKENXXX"
-    for element in response.json():
-        access_token =element["access_token"]
+    access_token = response.json()["access_token"]
     #send_message(message.user_id, str(payload))
     url = "http://patient.simplex48.ru:81/api/Web/recordDirect/"
     payload = json.dumps(payload, sort_keys=True, indent=1)
