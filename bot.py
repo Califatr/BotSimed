@@ -2,7 +2,8 @@ from typing import List
 from typing import Any
 from dataclasses import dataclass
 import json
-from datetime import datetime
+from datetime import datetime 
+from datetime import date
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
@@ -250,7 +251,8 @@ def new_record_doct_time(user_id):
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_line()     
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-    send_message(user_id, "Выберете время:", keyboard)   
+    send_message(user_id, "Выберете время:", keyboard)
+   
     
 def new_record_client_name(user_id):
     send_message(user_id, "Введите ваше полное имя:")
@@ -278,34 +280,41 @@ def new_record_end(message):
 def new_record_end_end(message):
     user_data = forms.user_data[message.user_id]["new_record_form"]
     print(user_data)
-    
+    time = str({user_data["new_record_doct_time"]})
+    time = time[2:]
+    l = len(time)
+    time = time[:l-2]
+    print(time)
+    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%Y")
+    doct_date = doct_date.strftime("%Y-%m-%d")
+    print(doct_date)
     payload = {
-    "medorg_id":1,
-    "doct_id":user_data["doct_id"],
-    "bra_id":user_data["bra_id"],
-    "work_id":user_data["work_id"],
-    "date":user_data["new_record_doct_date"],
-    "time_interval": str({user_data["new_record_doct_time"]}) + "-" + str({user_data["new_record_doct_time"]}),
-    "name":user_data["new_record_client_name"],
-    "phone":user_data["new_record_client_phone"],
-    "seocode": "вот тут не понял",
-    "firstname":user_data["new_record_client_name"],
-    "middlename":user_data["new_record_client_middlename"],
-    "lastname":user_data["new_record_client_lastname"],
+    "MEDORG_ID":1,
+    "DOCT_ID":user_data["doct_id"],
+    "BRA_ID":user_data["bra_id"],
+    "WORK_ID":user_data["work_id"],
+    "Date":str(doct_date),
+    "timeInterval": str(time) + "-" + str(time),
+    "Name":user_data["new_record_client_name"],
+    "Phone":user_data["new_record_client_phone"],
+    "firstName":user_data["new_record_client_name"],
+    "middleName":user_data["new_record_client_middlename"],
+    "lastName":user_data["new_record_client_lastname"],
     "birthday": user_data["new_record_client_birth"],
     }
     url = "http://patient.simplex48.ru:81/token"
-    payload='grant_type=password&username=vk&password=vkP%40ssw0rd'
+    payloadtoken='grant_type=password&username=vk&password=vkP%40ssw0rd'
     headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Cookie': '.AspNet.Cookies=tfLCNd98hiJrl7Bz8LogNkISEZtEtVaatGCh3M4AMOHCUidovrYoJPakcl0K9a92CmBGE1KUKaAmAlSLvmYoCS5gq3Omi3F465b8qGtV2TyFCZYSWeiwZgJiAtHXMk2UIJh-YWaxWg6RA5IVGIDkyyseuBIYotkH4w-7cIpbXgti4Sz7BxIws0THSwqbRJWNAuCydEJ01x3bbDPD6grtTNzFfUiZfC_llRuD1k7WkymsXSFrwukR4hXrh5ALlFFacaaZxHyF2701TAhCq-bc0daLjXeNGFzez1ye6GbSFnkvziCuuLXDb6i0npYWUGREbbkNnrZyrU1umTUGfRhlLkR9PJcv8U3-yj-B4SEU9dHiitp8-jkhhJGdtZk64FXm7Gi3A2hs7qq5P-kdSv9f2nat-5zjC07c0ds2bIXEBwsHpkyfD0s9cQ4k0dxqdZMPKXEfFjDX1xLAz4qgqkfPWQ'
     }
-    response = requests.request("POST", url, headers=headers, data=payload)
-    print(response.text)
+    response = requests.request("POST", url, headers=headers, data=payloadtoken)
+    #print(response.text)
     access_token = response.json()["access_token"]
     #send_message(message.user_id, str(payload))
     url = "http://patient.simplex48.ru:81/api/Web/recordDirect/"
-    payload = json.dumps(payload, sort_keys=True, indent=1)
+    payload = json.dumps(payload, indent=1)
+    print(payload)
     headers = {"content-type": "application/json", "Authorization" : "Bearer " + str(access_token)}
     response = requests.request("POST", url, data=payload, headers=headers)
     send_message(message.user_id, str(response.text))
