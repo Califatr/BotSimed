@@ -110,7 +110,7 @@ def new_record_doct_date(user_id):
         count_rows = 1
         for date in reversed(response.json()):
             keyboard.add_button(date, color=VkKeyboardColor.POSITIVE)
-            if i < len(response.json()) and i%4 == 0:
+            if i < len(response.json()) and i%3 == 0:
                 keyboard.add_line()
                 count_rows +=1
             i+=1
