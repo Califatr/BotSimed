@@ -306,7 +306,7 @@ def new_record_end_end(message):
     #send_message(message.user_id, str(payload))
     url = "http://patient.simplex48.ru:81/api/Web/recordDirect/"
     payload = json.dumps(payload, sort_keys=True, indent=1)
-    headers = {"content-type": "application/json" "Authorization: Bearer " + str(access_token)}
+    headers = {"content-type": "application/json", "Authorization" : "Bearer " + str(access_token)}
     response = requests.request("POST", url, data=payload, headers=headers)
     send_message(message.user_id, str(response.text))
 
