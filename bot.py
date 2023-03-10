@@ -312,7 +312,7 @@ def new_record_end_end(message):
     #print(response.text)
     access_token = response.json()["access_token"]
     #send_message(message.user_id, str(payload))
-    url = "http://patient.simplex48.ru:81/api/Web/recordAmoCRM"
+    url = "http://patient.simplex48.ru:81/api/Web/recordVK"
     payload = json.dumps(payload, indent=1)
     print(payload)
     headers = {"content-type": "application/json", "Authorization" : "Bearer " + str(access_token)}
