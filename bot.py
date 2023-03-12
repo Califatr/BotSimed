@@ -110,8 +110,9 @@ def new_record_doct_date(user_id):
         i = 1
         count_rows = 1
         for date in reversed(response.json()):
-            keyboard.add_button(date, color=VkKeyboardColor.POSITIVE)
-            print(date)
+            print_date = datetime.strptime(date, "%d-%m-%Y")
+            print_date = print_date.strftime("%d-%m-%Y")
+            keyboard.add_button(str(print_date), color=VkKeyboardColor.POSITIVE)
             if i < len(response.json()) and i%4 == 0:
                 keyboard.add_line()
                 print('/n')
@@ -267,10 +268,10 @@ def new_record_client_phone(user_id):
     send_message(user_id, "Введите ваш номер телефона, начиная с +7:")
 
 def new_record_client_birth(user_id):
-    send_message(user_id, "Введите Дату рождения, в формате ГГГГ-ММ-ДД, например 2000-01-01") 
+    send_message(user_id, "Введите Дату рождения, в формате ДД-ММ-ГГГГ, \nнапример 01-01-2000") 
 
 def new_record_end(message):
-    send_message(message.user_id, str(forms.user_data[message.user_id]))
+    #send_message(message.user_id, str(forms.user_data[message.user_id]))
     new_record_end_end(message)
 
 
@@ -287,7 +288,10 @@ def new_record_end_end(message):
     print(time)
     doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%Y")
     doct_date = doct_date.strftime("%Y-%m-%d")
+    birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d-%m-%Y")
+    birth_date = birth_date.strftime("%Y-%m-%d")
     print(doct_date)
+    print(birth_date)
     payload = {
     "MEDORG_ID":1,
     "DOCT_ID":user_data["doct_id"],
@@ -300,7 +304,7 @@ def new_record_end_end(message):
     "firstName":user_data["new_record_client_name"],
     "middleName":user_data["new_record_client_middlename"],
     "lastName":user_data["new_record_client_lastname"],
-    "birthday": user_data["new_record_client_birth"],
+    "birthday": str(birth_date),
     }
     url = "http://patient.simplex48.ru:81/token"
     payloadtoken='grant_type=password&username=vk&password=vkP%40ssw0rd'
@@ -317,7 +321,19 @@ def new_record_end_end(message):
     print(payload)
     headers = {"content-type": "application/json", "Authorization" : "Bearer " + str(access_token)}
     response = requests.request("POST", url, data=payload, headers=headers)
-    send_message(message.user_id, str(response.text))
+    #send_message(message.user_id, str(response.text))
+    print(response.text)
+    message_zapis = {
+        "Вы записались к врачу: " + '"'+str(user_data["new_record_doctor"])+'"'
+        +"\nВ медучереждение: "+ '"'+str(user_data["new_record_place"]+'"'
+        +"\nИмя врача: "'"'+str(user_data["new_record_doct_name"])+'"'
+        +"\nДата: "'"'+str(user_data["new_record_doct_date"])+'"'
+        +"\nВремя: "'"'+str(user_data["new_record_doct_time"])+'"')
+    }
+    if response.text != 1:
+        send_message(user_id, "Ваша запись успешно создана")
+        send_message(user_id, message_zapis)
+    send_message(user_id, "Для новой записи напишите в чат '"'Начать'"'")
 
 
 
