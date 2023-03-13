@@ -47,6 +47,13 @@ def new_record_place_buttons(user_id):
     keyboard = VkKeyboard(one_time=True)
     i = 1
     count_rows = 1
+
+    if len(response.json()) == 1:
+        forms.user_data[user_id]["new_record_form"]["new_record_place"] = response.json()[0]["name"]
+        forms.set_current_field(user_id, "new_record_doct_name")
+        new_record_doct_name(user_id)
+        return
+
     for element in response.json():
         bralist+=element["name"]+"\n"
         keyboard.add_button(element["name"], color=VkKeyboardColor.POSITIVE)
@@ -59,6 +66,7 @@ def new_record_place_buttons(user_id):
     keyboard.add_line()
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Выберете поликлиннику, в которую хотите записаться:", keyboard)
+
 def new_record_doct_name(user_id):  
     url = "https://patient.simplex48.ru/api/Web/clinic/1/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])
     response = requests.request("GET", url)  

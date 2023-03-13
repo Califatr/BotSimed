@@ -34,6 +34,9 @@ def is_user_in_form(user_id):
 		is_in_form[user_id] = False
 	return is_in_form[user_id]
 
+def set_current_field(user_id, field_name):
+	current_field[user_id] = field_name
+
 def get_previous_field(user_id):
 	if not user_id in is_in_form:
 		return None
