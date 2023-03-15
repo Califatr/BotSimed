@@ -10,7 +10,22 @@ from vk_api.utils import get_random_id
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 import requests
 
-
+def normalize_keyboard(array, max_columns=4)->VkKeyboard:
+    keyboard = VkKeyboard(one_time=True)
+    i = 0
+    row_count = 1
+    print("создаю клаву")
+    for element in array:
+        if row_count >= 10 or i >= 36:
+            break
+        if i%max_columns == 0 and i > 0:
+            keyboard.add_line()
+            row_count += 1
+            print("\\n")
+        keyboard.add_button(element, color=VkKeyboardColor.POSITIVE)
+        print("Добавил кнопку", element)
+        i+=1
+    return keyboard
 
 def new_record_doctor_buttons(user_id):
     doclist = "Список доступных врачей:\n"
@@ -114,22 +129,14 @@ def new_record_doct_date(user_id):
     response = requests.request("GET", url)
     print (url)
     if len(response.json()) != 0:
-        keyboard = VkKeyboard(one_time=True)
-        i = 1
-        count_rows = 1
+        buttons = []
         for date in reversed(response.json()):
             print_date = datetime.strptime(date, "%d-%m-%Y")
             print_date = print_date.strftime("%d-%m-%Y")
-            keyboard.add_button(str(print_date), color=VkKeyboardColor.POSITIVE)
-            if i < len(response.json()) and i%4 == 0:
-                keyboard.add_line()
-                print('/n')
-                count_rows +=1
-            i+=1
-            print (count_rows)
-            if count_rows == 10 or i > 36:
-                break
+            buttons.append(str(print_date))
         #print(list(date))
+        keyboard = normalize_keyboard(buttons, 4)
+        keyboard.add_line()
         keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
         keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
         send_message(user_id, "Выберете дату:", keyboard)
