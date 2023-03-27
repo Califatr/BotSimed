@@ -368,6 +368,9 @@ def new_record_end_end(message):
     }
     if response.text != 1:
         url = 'http://patient.simplex48.ru:81/api/Web/confirmationVK/1/'+str(response.text)
+        print(url)
+        response = requests.request("GET", url)
+        print(response)
         send_message(user_id, "Ваша запись успешно создана")
         send_message(user_id, message_data)
     keyboard = VkKeyboard(one_time=True)
