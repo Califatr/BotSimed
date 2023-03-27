@@ -38,27 +38,27 @@
 				},
 				"new_record_doct_date" : {
 					"message": "NOT USED HERE",
-					"validation_error": "TODO",
+					"validation_error": "Дата должна быть в формате 27-03-23",
 					"next_field":"new_record_doct_time",
 					"field_data": {
 						"type":"string",
-						"validation":".{3,}"
+						"validation":"[0-9]{2}\\-[0-9]{2}\\-[0-9]{2}"
 					},
 					"custom_action":"new_record_doct_date"
 				},
 				"new_record_doct_time" : {
 					"message": "NOT USED HERE",
-					"validation_error": "TODO",
+					"validation_error": "Время должно быть в формате 09:32",
 					"next_field":"new_record_client_lastname",
 					"field_data": {
 						"type":"string",
-						"validation":".{3,}"
+						"validation":"[0-9]{2}\\:[0-9]{2}"
 					},
 					"custom_action":"new_record_doct_time"
 				},
 				"new_record_client_lastname" : {
 					"message": "NOT USED HERE",
-					"validation_error": "TODO",
+					"validation_error": "Должно быть как минимум 3 буквы",
 					"next_field":"new_record_client_name",
 					"field_data": {
 						"type":"string",
@@ -68,7 +68,7 @@
 				},
 				"new_record_client_name" : {
 					"message": "NOT USED HERE",
-					"validation_error": "TODO",
+					"validation_error": "Должно быть как минимум 3 буквы",
 					"next_field":"new_record_client_middlename",
 					"field_data": {
 						"type":"string",
@@ -78,7 +78,7 @@
 				},
 				"new_record_client_middlename" : {
 					"message": "NOT USED HERE",
-					"validation_error": "TODO",
+					"validation_error": "Должно быть как минимум 3 буквы",
 					"next_field":"new_record_client_phone",
 					"field_data": {
 						"type":"string",
@@ -88,11 +88,11 @@
 				},
 				"new_record_client_phone" : {
 					"message": "NOT USED HERE",
-					"validation_error": "TODO",
+					"validation_error": "Номер телефона должен быть в формате 9205109523",
 					"next_field":"new_record_client_birth",
 					"field_data": {
 						"type":"string",
-						"validation":".{3,}"
+						"validation":"\\d{10}"
 					},
 					"custom_action":"new_record_client_phone"
 				},
