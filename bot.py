@@ -369,7 +369,8 @@ def new_record_end_end(message):
     if response.text != 1:
         url = 'http://patient.simplex48.ru:81/api/Web/confirmationVK/1/'+str(response.text)
         print(url)
-        response = requests.request("GET", url)
+        headers = {"content-type": "application/json", "Authorization" : "Bearer " + str(access_token)}
+        response = requests.request("GET", url, headers=headers)
         print(response)
         send_message(user_id, "Ваша запись успешно создана")
         send_message(user_id, message_data)
