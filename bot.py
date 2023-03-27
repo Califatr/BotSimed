@@ -279,13 +279,26 @@ def new_record_doct_time(user_id):
         if len(worker.schedule[0].cells) != 0:
             buttons = []
             for cell in worker.schedule[0].cells:
-                   
+                print_date = datetime.strptime(doct_date, "%Y-%m-%d")
+                print_date = print_date.strftime("%d-%m")
+                if datetime.now().strftime("%d-%m") == print_date:
+                    if datetime.strptime(cell.time_start, "%H:%M") <= datetime.now():
+                        continue
+
                 buttons.append(cell.time_start)
-    
-    keyboard = normalize_keyboard(buttons, 4 )
-    keyboard.add_line()
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
-    keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+
+    if len(buttons) == 0:
+        message_str = "Простите, но на этот день больше не проводится запись"
+        keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+    else:
+        message_str = "Выберете время:"
+        keyboard = normalize_keyboard(buttons, 4 )
+        keyboard.add_line()
+        keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+
+
     '''
             if cell.free != 'False':
                 keyboard.add_button(cell.time_start, color=VkKeyboardColor.POSITIVE)
@@ -300,7 +313,7 @@ def new_record_doct_time(user_id):
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     '''
     send_message(user_id, "Если что-то пошло не так, то напишите в чат 'Начать'")
-    send_message(user_id, "Выберете время:", keyboard)
+    send_message(user_id, message_str, keyboard)
     
    
     
@@ -345,8 +358,8 @@ def new_record_end(message):
 def new_record_end_end(message):
     user_data = forms.user_data[message.user_id]["new_record_form"]
     print(user_data)
-    time =datetime.strptime(user_data["new_record_doct_time"], "%H:%M")
-    #time = str({user_data["new_record_doct_time"]})
+    time_obj =datetime.strptime(user_data["new_record_doct_time"], "%H:%M")
+    time = str({user_data["new_record_doct_time"]})
     time = time[2:]
     l = len(time)
     time = time[:l-2]
@@ -360,7 +373,7 @@ def new_record_end_end(message):
     print(doct_date)
     print(birth_date)
 
-    print(str(time) + "-" + str(time + timedelta(minutes=20)))
+    print(time_obj.strftime("%H:%M") + "-" + (time_obj + timedelta(minutes=20)).strftime("%H:%M"))
 
     payload = {
     "MEDORG_ID":1,
@@ -368,7 +381,7 @@ def new_record_end_end(message):
     "BRA_ID":user_data["bra_id"],
     "WORK_ID":user_data["work_id"],
     "Date":str(doct_date),
-    "timeInterval": str(time) + "-" + str(time + timedelta(minutes=20)),
+    "timeInterval": time_obj.strftime("%H:%M") + "-" + (time_obj + timedelta(minutes=20)).strftime("%H:%M"),
     "Name":user_data["new_record_client_name"],
     "Phone":user_data["new_record_client_phone"],
     "firstName":user_data["new_record_client_name"],
@@ -415,7 +428,7 @@ def new_record_end_end(message):
 
 
 # API-ключ созданный ранее
-token = "vk1.a.x7aV3LPJu298QH3QD1fyjCsyxgI-he5nUyuzDX9o6-hgPt9viwxQAg2MmtSrl0moPDd-H-vsRriqZAnUNAFViUm2N_R0g7LyIUgcVi3-z1bo83cpv5VCUsYAsi9iXQplqmRUr45BCM6VLm0wflQhhPAylBJjtwe1wkHzUFjqDvPyOOcO5a5DxlMSLp_TmRkv"
+token = "vk1.a.xCzAzGn4hP77o3oyPJKlG7xygoNRuanZjHx8TiBOEDf3B4HzdiZbMudpaxrtejqTQAbm9bHTxSRTOomyjW2iBSCebWAC-U9LTidnEbPm-qdEC_g7CMx-ReazzQpZM2UcsroEokrY4OWHJuA2V-7mhmAsXrOS-1lQJmGTwQ6HXXBrpgL6P9q9c3x1OGLBO5G8GBT2XUWX_2B7PhTCMukQng"
 
 # Авторизуемся как сообщество
 vk_session = vk_api.VkApi(token=token)
