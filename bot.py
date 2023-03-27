@@ -285,8 +285,9 @@ def new_record_doct_time(user_id):
     keyboard.add_line()     
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     '''
+    send_message(user_id, "Если что-то пошло не так, то напишите в чат 'Начать'")
     send_message(user_id, "Выберете время:", keyboard)
-    send_message(user_id, ":")
+    
    
     
 def new_record_client_name(user_id):
@@ -315,12 +316,13 @@ def new_record_end(message):
 def new_record_end_end(message):
     user_data = forms.user_data[message.user_id]["new_record_form"]
     print(user_data)
+    #time =datetime.strptime(user_data["new_record_doct_time"], "%d-%m-%Y")
     time = str({user_data["new_record_doct_time"]})
     time = time[2:]
     l = len(time)
     time = time[:l-2]
-    print(time)
-    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%Y")
+    
+    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%y")
     doct_date = doct_date.strftime("%Y-%m-%d")
     birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d-%m-%Y")
     birth_date = birth_date.strftime("%Y-%m-%d")
@@ -357,7 +359,7 @@ def new_record_end_end(message):
     response = requests.request("POST", url, data=payload, headers=headers)
     #send_message(message.user_id, str(response.text))
     print(response.text)
-    message_zapis = {
+    message_data = {
         "Вы записались к врачу: " + '"'+str(user_data["new_record_doctor"])+'"'
         +"\nВ медучереждение: "+ '"'+str(user_data["new_record_place"]+'"'
         +"\nИмя врача: "'"'+str(user_data["new_record_doct_name"])+'"'
@@ -365,9 +367,12 @@ def new_record_end_end(message):
         +"\nВремя: "'"'+str(user_data["new_record_doct_time"])+'"')
     }
     if response.text != 1:
+        url = 'http://patient.simplex48.ru:81/api/Web/confirmationVK/1/'+str(response.text)
         send_message(user_id, "Ваша запись успешно создана")
-        send_message(user_id, message_zapis)
-    send_message(user_id, "Для новой записи напишите в чат '"'Начать'"'")
+        send_message(user_id, message_data)
+    keyboard = VkKeyboard(one_time=True)
+    keyboard.add_button("Записаться", color=VkKeyboardColor.POSITIVE)
+    send_message(user_id, "Для новой записи напишите в чат '"'Начать'"', или нажмите на кнопку", keyboard)
 
 
 
@@ -429,5 +434,5 @@ for event in longpoll.listen():
             forms.update(event)
             continue
 
-        if event.text.lower() in ['начать','yfxfnm','отмена','jnvtyf']: #Если написали заданную фразу
+        if event.text.lower() in ['начать','yfxfnm','отмена','jnvtyf', 'записаться']: #Если написали заданную фразу
             forms.start_form(user_id, "new_record_form")
