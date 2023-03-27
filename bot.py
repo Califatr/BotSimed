@@ -143,12 +143,14 @@ def new_record_doct_date(user_id):
     url = "https://patient.simplex48.ru/api/Web/workingdays/1/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])+"/"+str(forms.user_data[user_id]["new_record_form"]["bra_id"])+"/"+str(work_id)
     response = requests.request("GET", url)
     print (url)
+    i=0
     if len(response.json()) != 0:
         buttons = []
-        for date in reversed(response.json()):
+        for date in reversed(response.json()) and i < 16:
             print_date = datetime.strptime(date, "%d-%m-%Y")
             print_date = print_date.strftime("%d-%m-%y")
             buttons.append(str(print_date))
+            i=i+1
         #print(list(date))
         send_message(user_id, "Если что-то пошло не так, напишите в чат 'Начать'")
         keyboard = normalize_keyboard(buttons, 4)
