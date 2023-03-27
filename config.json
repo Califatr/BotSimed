@@ -98,11 +98,11 @@
 				},
 				"new_record_client_birth" : {
 					"message": "NOT USED HERE",
-					"validation_error": "TODO",
+					"validation_error": "Дата рождения должна быть в формате 26-09-2001",
 					"next_field":"",
 					"field_data": {
 						"type":"string",
-						"validation":".{3,}"
+						"validation":"^(?:0[1-9]|[12]\\d|3[01])([\/-])(?:0[1-9]|1[012])\\1(?:19|20)\\d\\d$"
 					},
 					"custom_action":"new_record_client_birth"
 				}
