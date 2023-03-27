@@ -10,13 +10,13 @@ from vk_api.utils import get_random_id
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 import requests
 
-def normalize_keyboard(array, max_columns=4)->VkKeyboard:
+def normalize_keyboard(array, max_columns)->VkKeyboard:
     keyboard = VkKeyboard(one_time=True)
     i = 0
     row_count = 1
-    print("создаю клаву")
+    print("создаю клавиатуру")
     for element in array:
-        if row_count >= 10 or i >= 36:
+        if row_count >= 9 or i >= 36:
             break
         if i%max_columns == 0 and i > 0:
             keyboard.add_line()
@@ -33,16 +33,14 @@ def new_record_doctor_buttons(user_id):
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
     i = 1
-    count_rows = 1
-    for element in response.json():
-        doclist+=(element["name"])+"\n"
-        keyboard.add_button(element["name"],color=VkKeyboardColor.POSITIVE)
-        if i < len(response.json()) and i%2 == 0:
-            keyboard.add_line()
-            count_rows +=1
-        i+=1
-        if count_rows == 9:
-            break
+    if len(response.json()) != 0:
+        buttons = []
+        for element in response.json():
+            buttons.append(str(element["name"]))
+    else:
+        send_message(user_id, "Доступных врачей для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
+    keyboard = normalize_keyboard(buttons, 3)
+    keyboard.add_line()
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "К какому врачу из списка желаете записаться.", keyboard)
 
@@ -71,13 +69,13 @@ def new_record_place_buttons(user_id):
 
     for element in response.json():
         bralist+=element["name"]+"\n"
-        keyboard.add_button(element["name"], color=VkKeyboardColor.POSITIVE)
-        if i < len(response.json()) and i%2 == 0:
-            keyboard.add_line()
-            count_rows+=1
-        i+=1
-        if count_rows == 9:
-            break
+    if len(response.json()) != 0:
+        buttons = []
+        for element in response.json():
+            buttons.append(str(element["name"]))
+    else:
+        send_message(user_id, "Доступных поликлинник для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
+    keyboard = normalize_keyboard(buttons, 2)
     keyboard.add_line()
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Выберете поликлиннику, в которую хотите записаться:", keyboard)
@@ -96,8 +94,18 @@ def new_record_doct_name(user_id):
     url = "https://patient.simplex48.ru/api/Web/allmedic/1/"+str(bra_id)+"/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
-    i = 1
-    count_rows = 1
+    #i = 1
+    #count_rows = 1
+    if len(response.json()) != 0:
+        buttons = []
+        for element in response.json():
+            buttons.append(str(element["name"]))
+    else:
+        send_message(user_id, "Доступных врачей для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
+    keyboard = normalize_keyboard(buttons, 3)
+    keyboard.add_line()
+    keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+    '''
     for element in response.json():
         namelist+=element["name"]+"\n"
         keyboard.add_button(element["name"], color=VkKeyboardColor.POSITIVE)
@@ -110,6 +118,7 @@ def new_record_doct_name(user_id):
     keyboard.add_line()
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+    '''
     send_message(user_id, "Выберете ФИО врача, к которому хотите записаться:", keyboard)
 
 def new_record_doct_date(user_id):
@@ -132,7 +141,7 @@ def new_record_doct_date(user_id):
         buttons = []
         for date in reversed(response.json()):
             print_date = datetime.strptime(date, "%d-%m-%Y")
-            print_date = print_date.strftime("%d-%m-%Y")
+            print_date = print_date.strftime("%d-%m-%y")
             buttons.append(str(print_date))
         #print(list(date))
         keyboard = normalize_keyboard(buttons, 4)
@@ -151,7 +160,7 @@ def new_record_doct_time(user_id):
     doct_date = forms.user_data[user_id]["new_record_form"]["new_record_doct_date"]
     doct_name = forms.user_data[user_id]["new_record_form"]["new_record_doct_name"]
     work_id =  forms.user_data[user_id]["new_record_form"]["work_id"]
-    doct_date = datetime.strptime(doct_date, "%d-%m-%Y")
+    doct_date = datetime.strptime(doct_date, "%d-%m-%y")
     doct_date = doct_date.strftime("%Y-%m-%d")
     print(doct_date)
     url = "https://patient.simplex48.ru/api/Web/WorkerCells/"
@@ -255,7 +264,15 @@ def new_record_doct_time(user_id):
     i = 1
     count_rows = 1
     for worker in root.workers:
-        for cell in worker.schedule[0].cells:
+        if len(worker.schedule[0].cells) != 0:
+            buttons = []
+            for cell in worker.schedule[0].cells:   
+                buttons.append(cell.time_start)
+    
+    keyboard = normalize_keyboard(buttons, 4 )
+    keyboard.add_line()
+    keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+    '''
             if cell.free != 'False':
                 keyboard.add_button(cell.time_start, color=VkKeyboardColor.POSITIVE)
             if i < len(worker.schedule[0].cells)  and i%4 == 0:
@@ -267,7 +284,9 @@ def new_record_doct_time(user_id):
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_line()     
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+    '''
     send_message(user_id, "Выберете время:", keyboard)
+    send_message(user_id, ":")
    
     
 def new_record_client_name(user_id):
