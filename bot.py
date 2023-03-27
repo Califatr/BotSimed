@@ -77,7 +77,7 @@ def new_record_place_buttons(user_id):
             buttons.append(str(element["name"]))
     else:
         send_message(user_id, "Доступных поликлинник для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
-    send_message(user_id, "Если что-то пошло не так, напишите в чат 'Начать'")
+    send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена'")
     keyboard = normalize_keyboard(buttons, 2)
 
     keyboard.add_line()
@@ -107,7 +107,7 @@ def new_record_doct_name(user_id):
             buttons.append(str(element["name"]))
     else:
         send_message(user_id, "Доступных врачей для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
-    send_message(user_id, "Если что-то пошло не так, напишите в чат 'Начать'")
+    send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена'")
     keyboard = normalize_keyboard(buttons, 3)
     keyboard.add_line()
     keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
@@ -155,7 +155,7 @@ def new_record_doct_date(user_id):
             buttons.append(str(print_date))
             i=i+1
         #print(list(date))
-        send_message(user_id, "Если что-то пошло не так, напишите в чат 'Начать'")
+        send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена'")
         keyboard = normalize_keyboard(buttons, 4)
         keyboard.add_line()
         keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
