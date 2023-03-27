@@ -3,7 +3,7 @@
 		{
 			"name": "new_record_form",
 			"first_field": "new_record_doctor",
-			"end_handler": "new_record_end",
+			"end_handler": "new_record_end_end",
 			"fields": {
 				"new_record_doctor" : {
 					"message": "NOT USED HERE",
@@ -99,12 +99,22 @@
 				"new_record_client_birth" : {
 					"message": "NOT USED HERE",
 					"validation_error": "Дата рождения должна быть в формате 26-09-2001",
-					"next_field":"",
+					"next_field":"new_record_end",
 					"field_data": {
 						"type":"string",
 						"validation":"^(?:0[1-9]|[12]\\d|3[01])([\/-])(?:0[1-9]|1[012])\\1(?:19|20)\\d\\d$"
 					},
 					"custom_action":"new_record_client_birth"
+				},
+				"new_record_end" : {
+					"message": "NOT USED HERE",
+					"validation_error": "TODO",
+					"next_field":"",
+					"field_data": {
+						"type":"string",
+						"validation":""
+					},
+					"custom_action":"new_record_end"
 				}
 			}
 		}

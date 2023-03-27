@@ -347,9 +347,43 @@ def new_record_client_phone(user_id):
 def new_record_client_birth(user_id):
     send_message(user_id, "Введите Дату рождения, в формате ДД-ММ-ГГГГ, \nнапример 01-01-2000") 
 
-def new_record_end(message):
-    #send_message(message.user_id, str(forms.user_data[message.user_id]))
-    new_record_end_end(message)
+def new_record_end(user_id):
+    user_data = forms.user_data[user_id]["new_record_form"]
+    time_obj =datetime.strptime(user_data["new_record_doct_time"], "%H:%M")
+    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%y")
+    doct_date = doct_date.strftime("%Y-%m-%d")
+    birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d-%m-%Y")
+    birth_date = birth_date.strftime("%Y-%m-%d")
+
+    Date=str(doct_date)
+    timeInterval= time_obj.strftime("%H:%M") + "-" + (time_obj + timedelta(minutes=20)).strftime("%H:%M")
+    Name=user_data["new_record_client_name"]
+    Phone=user_data["new_record_client_phone"]
+    firstName=user_data["new_record_client_name"]
+    middleName=user_data["new_record_client_middlename"]
+    lastName=user_data["new_record_client_lastname"]
+    birthday= str(birth_date)
+    
+    answer = f"""{Date}
+    {timeInterval}
+    {Name}
+    {Phone}
+    {firstName}
+    {middleName}
+    {lastName}
+    {birthday}"""
+
+    keyboard = VkKeyboard(one_time=True)
+    keyboard.add_button("Подтвердить", color=VkKeyboardColor.POSITIVE)
+    keyboard.add_line()
+    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
+
+    send_message(user_id, answer)
+    send_message(user_id, "Всё верно?", keyboard)
+
+
+    
 
 
 
@@ -454,7 +488,7 @@ import forms
 forms.send_message = send_message #Здесь мы говорим моему модулю какую именно функцию использовать для отправки сообщения
 
 forms.end_handlers = { #Здесь мы делаем словарь, в который вписываем все "end hanler"ы
-    "new_record_end":new_record_end
+    "new_record_end_end": new_record_end_end,
 }
 forms.default_keyboard = VkKeyboard(one_time=True) #Здесь мы создаём дефолтную клавиатуру, которая будет отправляться каждый раз
 forms.default_keyboard.add_button('Отмена', color=VkKeyboardColor.NEGATIVE)
@@ -470,7 +504,8 @@ forms.custom_actions = { #Здесь мы делаем словарь, в кот
     "new_record_client_name": new_record_client_name,
     "new_record_client_middlename": new_record_client_middlename,
     "new_record_client_phone": new_record_client_phone,
-    "new_record_client_birth": new_record_client_birth
+    "new_record_client_birth": new_record_client_birth,
+    "new_record_end": new_record_end,
 }
 
 
