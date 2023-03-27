@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import json
 from datetime import datetime 
 from datetime import date
+from datetime import timedelta
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
@@ -146,7 +147,9 @@ def new_record_doct_date(user_id):
     i=0
     if len(response.json()) != 0:
         buttons = []
-        for date in reversed(response.json()) and i < 16:
+        for date in reversed(response.json()):
+            if i >= 16:
+                break
             print_date = datetime.strptime(date, "%d-%m-%Y")
             print_date = print_date.strftime("%d-%m-%y")
             buttons.append(str(print_date))
@@ -342,8 +345,8 @@ def new_record_end(message):
 def new_record_end_end(message):
     user_data = forms.user_data[message.user_id]["new_record_form"]
     print(user_data)
-    #time =datetime.strptime(user_data["new_record_doct_time"], "%d-%m-%Y")
-    time = str({user_data["new_record_doct_time"]})
+    time =datetime.strptime(user_data["new_record_doct_time"], "%H:%M")
+    #time = str({user_data["new_record_doct_time"]})
     time = time[2:]
     l = len(time)
     time = time[:l-2]
@@ -356,13 +359,16 @@ def new_record_end_end(message):
     birth_date = birth_date.strftime("%Y-%m-%d")
     print(doct_date)
     print(birth_date)
+
+    print(str(time) + "-" + str(time + timedelta(minutes=20)))
+
     payload = {
     "MEDORG_ID":1,
     "DOCT_ID":user_data["doct_id"],
     "BRA_ID":user_data["bra_id"],
     "WORK_ID":user_data["work_id"],
     "Date":str(doct_date),
-    "timeInterval": str(time) + "-" + str(time),
+    "timeInterval": str(time) + "-" + str(time + timedelta(minutes=20)),
     "Name":user_data["new_record_client_name"],
     "Phone":user_data["new_record_client_phone"],
     "firstName":user_data["new_record_client_name"],
