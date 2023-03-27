@@ -364,14 +364,13 @@ def new_record_end(user_id):
     lastName=user_data["new_record_client_lastname"]
     birthday= str(birth_date)
     
-    answer = f"""{Date}
-    {timeInterval}
-    {Name}
-    {Phone}
-    {firstName}
-    {middleName}
-    {lastName}
-    {birthday}"""
+    answer = f"""Дата:{Date}
+    Время: {timeInterval}
+    Телефон: {Phone}
+    Имя: {firstName}
+    Фамилия: {middleName}
+    Отчетство: {lastName}
+    Дата рождения: {birthday}"""
 
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Подтвердить", color=VkKeyboardColor.POSITIVE)
@@ -380,7 +379,7 @@ def new_record_end(user_id):
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
 
     send_message(user_id, answer)
-    send_message(user_id, "Всё верно?", keyboard)
+    send_message(user_id, "Проверьте введенные данные. Всё верно?", keyboard)
 
 
     
