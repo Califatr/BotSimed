@@ -101,6 +101,10 @@ def handle_form_field(message, form_name, form_field):
 		cancel_form(message.user_id)
 		return
 	if message.text.lower() == "назад":
+		if form_field == "new_record_doct_name":
+			cancel_form(message.user_id)
+			start_form(message.user_id, form_name)
+			return
 		handle_previous_field(message)
 		return
 
