@@ -38,7 +38,7 @@
 				},
 				"new_record_doct_date" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Дата должна быть в формате ДД.ММ.ГГ. Повторите попытку снова.",
+					"validation_error": "Дата должна быть в формате ДД.ММ.ГГ, например: 01.01.23. Повторите попытку снова.",
 					"next_field":"new_record_doct_time",
 					"field_data": {
 						"type":"string",
@@ -98,7 +98,7 @@
 				},
 				"new_record_client_birth" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Дата рождения должна быть в формате ДД.ММ.ГГГГ. Повторите попытку снова.",
+					"validation_error": "Дата рождения должна быть в формате ДД.ММ.ГГГГ, например: 01.01.1991. Повторите попытку снова.",
 					"next_field":"new_record_end",
 					"field_data": {
 						"type":"string",
