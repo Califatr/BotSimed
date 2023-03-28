@@ -317,7 +317,7 @@ def new_record_client_name(user_id):
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-    send_message(user_id, "Введите Ваше полное имя:", keyboard)
+    send_message(user_id, "Введите Ваше имя:", keyboard)
 
 
 def new_record_client_lastname(user_id):
