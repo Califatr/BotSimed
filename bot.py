@@ -369,9 +369,9 @@ def new_record_end(user_id):
     answer = f"""Дата: {doctdateconfirm}
     Время: {timeInterval}
     Телефон: {Phone}
+    Фамилия: {lastName}
     Имя: {firstName}
-    Фамилия: {middleName}
-    Отчетство: {lastName}
+    Отчетство: {middleName}
     Дата рождения: {birthdateconfirm}"""
 
     keyboard = VkKeyboard(one_time=True)
