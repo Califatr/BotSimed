@@ -529,4 +529,4 @@ for event in longpoll.listen():
         else:
            keyboard = VkKeyboard(one_time=True)
            keyboard.add_button("Записаться на приём", color=VkKeyboardColor.POSITIVE)
-           send_message(user_id, "Для новой записи напишите в чат ''Начать'', или нажмите на кнопку ''Записаться на приём''.", keyboard) 
+           send_message(user_id, "Для того, чтобы создать новую запись, напишите в чат ''Начать'', или нажмите на кнопку ''Записаться на приём''.", keyboard) 
