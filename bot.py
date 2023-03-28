@@ -42,7 +42,7 @@ def new_record_doctor_buttons(user_id):
         send_message(user_id, "Доступных врачей для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
     keyboard = normalize_keyboard(buttons, 2)
     keyboard.add_line()
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "К какому врачу из списка желаете записаться.", keyboard)
 
@@ -56,7 +56,7 @@ def new_record_place_buttons(user_id):
             doct_id = element["id"]
     forms.user_data[user_id]["new_record_form"]["doct_id"] = doct_id
     print (doct_id)
-    bralist = "Выберете Поликлинику:\n"
+    bralist = "Выберите Поликлинику:\n"
     url = "https://patient.simplex48.ru/api/Web/clinic/1/"+str(doct_id)
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
@@ -81,9 +81,9 @@ def new_record_place_buttons(user_id):
     keyboard = normalize_keyboard(buttons, 2)
 
     keyboard.add_line()
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-    send_message(user_id, "Выберете поликлиннику, в которую хотите записаться:", keyboard)
+    send_message(user_id, "Выберите поликлиннику, в которую хотите записаться:", keyboard)
 
 def new_record_doct_name(user_id):  
     url = "https://patient.simplex48.ru/api/Web/clinic/1/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])
@@ -95,7 +95,7 @@ def new_record_doct_name(user_id):
             bra_id = element["id"]
     forms.user_data[user_id]["new_record_form"]["bra_id"] = bra_id
     print (bra_id)
-    namelist = "Выберете ФИО врача к которому хотите записаться:\n"
+    namelist = "Выберите ФИО врача к которому хотите записаться:\n"
     url = "https://patient.simplex48.ru/api/Web/allmedic/1/"+str(bra_id)+"/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
@@ -110,7 +110,7 @@ def new_record_doct_name(user_id):
     send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена', а затем 'Начать'")
     keyboard = normalize_keyboard(buttons, 3)
     keyboard.add_line()
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     '''
     for element in response.json():
@@ -126,7 +126,7 @@ def new_record_doct_name(user_id):
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     '''
-    send_message(user_id, "Выберете ФИО врача, к которому хотите записаться:", keyboard)
+    send_message(user_id, "Выберите ФИО врача, к которому хотите записаться:", keyboard)
 
 def new_record_doct_date(user_id):
     doct_name = forms.user_data[user_id]["new_record_form"]["new_record_doct_name"]
@@ -151,7 +151,7 @@ def new_record_doct_date(user_id):
             if i >= 16:
                 break
             print_date = datetime.strptime(date, "%d-%m-%Y")
-            print_date = print_date.strftime("%d-%m-%y")
+            print_date = print_date.strftime("%d.%m.%y")
             buttons.append(str(print_date))
             i=i+1
         #print(list(date))
@@ -160,11 +160,11 @@ def new_record_doct_date(user_id):
         keyboard.add_line()
         keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
         keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-        send_message(user_id, "Выберете дату:", keyboard)
+        send_message(user_id, "Выберите дату:", keyboard)
     else:
         keyboard = VkKeyboard(one_time=True)
         keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
-        send_message(user_id, "Свободных дат для записи нет. Напишите в чат Начать и выберете другого врача, если это необходимо", keyboard)
+        send_message(user_id, "Свободных дат для записи нет. Напишите в чат Начать и выберите другого врача, если это необходимо", keyboard)
             
 def new_record_doct_time(user_id):
     bra_id = forms.user_data[user_id]["new_record_form"]["bra_id"]
@@ -172,7 +172,7 @@ def new_record_doct_time(user_id):
     doct_date = forms.user_data[user_id]["new_record_form"]["new_record_doct_date"]
     doct_name = forms.user_data[user_id]["new_record_form"]["new_record_doct_name"]
     work_id =  forms.user_data[user_id]["new_record_form"]["work_id"]
-    doct_date = datetime.strptime(doct_date, "%d-%m-%y")
+    doct_date = datetime.strptime(doct_date, "%d.%m.%y")
     doct_date = doct_date.strftime("%Y-%m-%d")
     print(doct_date)
     url = "https://patient.simplex48.ru/api/Web/WorkerCells/"
@@ -285,13 +285,13 @@ def new_record_doct_time(user_id):
 
     if len(buttons) == 0:
         message_str = "Простите, но на этот день больше не проводится запись"
-        keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
         keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     else:
-        message_str = "Выберете время:"
+        message_str = "Выберите время:"
         keyboard = normalize_keyboard(buttons, 4 )
         keyboard.add_line()
-        keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+        keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
         keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
 
 
@@ -315,27 +315,27 @@ def new_record_doct_time(user_id):
     
 def new_record_client_name(user_id):
     keyboard = VkKeyboard(one_time=True)
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Введите ваше полное имя:", keyboard)
 
 
 def new_record_client_lastname(user_id):
     keyboard = VkKeyboard(one_time=True)
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Введите вашу фамилию:", keyboard)
 
 
 def new_record_client_middlename(user_id):
     keyboard = VkKeyboard(one_time=True)
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Введите ваше Отчество:", keyboard)
 
 def new_record_client_phone(user_id):
     keyboard = VkKeyboard(one_time=True)
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Введите ваш номер телефона без кода страны, например 9505908070",keyboard)
     
@@ -346,11 +346,11 @@ def new_record_client_birth(user_id):
 def new_record_end(user_id):
     user_data = forms.user_data[user_id]["new_record_form"]
     time_obj =datetime.strptime(user_data["new_record_doct_time"], "%H:%M")
-    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%y")
-    doctdateconfirm = doct_date.strftime("%d-%m-%Y")
+    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d.%m.%y")
+    doctdateconfirm = doct_date.strftime("%d.%m.%Y")
     doct_date = doct_date.strftime("%Y-%m-%d")
-    birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d-%m-%Y")
-    birthdateconfirm = birth_date.strftime("%d-%m-%Y")
+    birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d.%m.%Y")
+    birthdateconfirm = birth_date.strftime("%d.%m.%Y")
     birth_date = birth_date.strftime("%Y-%m-%d")
 
     Date=str(doct_date)
@@ -373,7 +373,7 @@ def new_record_end(user_id):
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Подтвердить", color=VkKeyboardColor.POSITIVE)
     keyboard.add_line()
-    keyboard.add_button("Назад", color=VkKeyboardColor.NEGATIVE)
+    keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
 
     send_message(user_id, answer)
@@ -397,9 +397,9 @@ def new_record_end_end(message):
     l = len(time)
     buf = time[:l-2]
     print(buf)
-    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%y")
+    doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d.%m.%y")
     doct_date = doct_date.strftime("%Y-%m-%d")
-    birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d-%m-%Y")
+    birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d.%m.%Y")
     birth_date = birth_date.strftime("%Y-%m-%d")
     print(doct_date)
     print(birth_date)
@@ -517,9 +517,9 @@ for event in longpoll.listen():
             forms.update(event)
             continue
 
-        if event.text.lower() in ['начать','yfxfnm','отмена','jnvtyf', 'записаться']: #Если написали заданную фразу
+        if event.text.lower() in ['начать','yfxfnm','отмена','jnvtyf', 'записаться на приём']: #Если написали заданную фразу
             forms.start_form(user_id, "new_record_form")
         else:
            keyboard = VkKeyboard(one_time=True)
-           keyboard.add_button("Записаться", color=VkKeyboardColor.POSITIVE)
+           keyboard.add_button("Записаться на приём", color=VkKeyboardColor.POSITIVE)
            send_message(user_id, "Для новой записи напишите в чат '"'Начать'"', или нажмите на кнопку", keyboard) 
