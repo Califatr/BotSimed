@@ -341,6 +341,7 @@ def new_record_client_phone(user_id):
     
 
 def new_record_client_birth(user_id):
+    keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     send_message(user_id, "Введите Дату рождения, в формате ДД.ММ.ГГГГ, \nнапример 01.01.2000",keyboard) 
@@ -452,8 +453,11 @@ def new_record_end_end(message):
         headers = {"content-type": "application/json", "Authorization" : "Bearer " + str(access_token)}
         response = requests.request("GET", url, headers=headers)
         print(response)
-        send_message(user_id, "Ваша запись успешно создана")
-        send_message(user_id, message_data)
+        if str(response) == '<Response [200]>':
+            send_message(user_id, "Ваша запись успешно создана")
+            send_message(user_id, message_data)
+        else:
+            send_message(user_id, "Что-то пошло не так. Попробуйте позже.")
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Записаться на приём", color=VkKeyboardColor.POSITIVE)
     send_message(user_id, "Для новой записи напишите в чат '"'Начать'"', или нажмите на кнопку", keyboard)
@@ -491,7 +495,7 @@ forms.end_handlers = { #Здесь мы делаем словарь, в кото
 }
 forms.default_keyboard = VkKeyboard(one_time=True) #Здесь мы создаём дефолтную клавиатуру, которая будет отправляться каждый раз
 forms.default_keyboard.add_button('Отмена', color=VkKeyboardColor.NEGATIVE)
-forms.default_keyboard.add_button('Назад', color=VkKeyboardColor.NEGATIVE)
+forms.default_keyboard.add_button('Назад', color=VkKeyboardColor.PRIMARY)
 
 forms.custom_actions = { #Здесь мы делаем словарь, в который вписываем все "custom_action"ы (в нашем случае они делают кнопки)
     "new_record_doctor_buttons":new_record_doctor_buttons,
