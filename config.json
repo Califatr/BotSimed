@@ -7,7 +7,7 @@
 			"fields": {
 				"new_record_doctor" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Должность должна состоять как минимум из 3 символов",
+					"validation_error": "Должность должна состоять как минимум из 3 символов. Повторите попытку снова.",
 					"next_field":"new_record_place",
 					"field_data": {
 						"type":"string",
@@ -17,7 +17,7 @@
 				},
 				"new_record_place" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Название поликлиники должно состоять как минимум из 3 символов",
+					"validation_error": "Название поликлиники должно состоять как минимум из 3 символов. Повторите попытку снова.",
 					"next_field":"new_record_doct_name",
 					"field_data": {
 						"type":"string",
@@ -28,7 +28,7 @@
 				},
 				"new_record_doct_name" : {
 					"message": "NOT USED HERE",
-					"validation_error": "ФИО должно состоять как минимум из 3 символов",
+					"validation_error": "ФИО должно состоять как минимум из 3 символов. Повторите попытку снова.",
 					"next_field":"new_record_doct_date",
 					"field_data": {
 						"type":"string",
@@ -38,7 +38,7 @@
 				},
 				"new_record_doct_date" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Дата должна быть в формате 27.03.23",
+					"validation_error": "Дата должна быть в формате 27.03.23. Повторите попытку снова.",
 					"next_field":"new_record_doct_time",
 					"field_data": {
 						"type":"string",
@@ -48,7 +48,7 @@
 				},
 				"new_record_doct_time" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Время должно быть в формате 09:32",
+					"validation_error": "Время должно быть в формате 09:32. Повторите попытку снова.",
 					"next_field":"new_record_client_lastname",
 					"field_data": {
 						"type":"string",
@@ -58,7 +58,7 @@
 				},
 				"new_record_client_lastname" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Должно быть как минимум 3 буквы",
+					"validation_error": "Должно быть как минимум 3 буквы. Повторите попытку снова.",
 					"next_field":"new_record_client_name",
 					"field_data": {
 						"type":"string",
@@ -68,7 +68,7 @@
 				},
 				"new_record_client_name" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Должно быть как минимум 3 буквы",
+					"validation_error": "Должно быть как минимум 3 буквы. Повторите попытку снова.",
 					"next_field":"new_record_client_middlename",
 					"field_data": {
 						"type":"string",
@@ -78,7 +78,7 @@
 				},
 				"new_record_client_middlename" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Должно быть как минимум 3 буквы",
+					"validation_error": "Должно быть как минимум 3 буквы. Повторите попытку снова.",
 					"next_field":"new_record_client_phone",
 					"field_data": {
 						"type":"string",
@@ -88,7 +88,7 @@
 				},
 				"new_record_client_phone" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Номер телефона должен быть в формате 9205109523",
+					"validation_error": "Номер телефона должен быть в формате 9205109523. Повторите попытку снова.",
 					"next_field":"new_record_client_birth",
 					"field_data": {
 						"type":"string",
@@ -98,7 +98,7 @@
 				},
 				"new_record_client_birth" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Дата рождения должна быть в формате 26.09.2001",
+					"validation_error": "Дата рождения должна быть в формате 26.09.2001. Повторите попытку снова.",
 					"next_field":"new_record_end",
 					"field_data": {
 						"type":"string",
