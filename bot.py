@@ -77,7 +77,7 @@ def new_record_place_buttons(user_id):
             buttons.append(str(element["name"]))
     else:
         send_message(user_id, "Доступных поликлинник для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
-    send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена', а затем 'Начать'")
+    send_message(user_id, "Если что-то пойдет не так, напишите в чат 'Отмена', а затем 'Начать'")
     keyboard = normalize_keyboard(buttons, 2)
 
     keyboard.add_line()
@@ -107,7 +107,7 @@ def new_record_doct_name(user_id):
             buttons.append(str(element["name"]))
     else:
         send_message(user_id, "Доступных врачей для записи нет. Нажмите кнопку "'Отмена'" и попробуйте позже. Для новой записи напишите "'Начать'" в чат")
-    send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена', а затем 'Начать'")
+    #send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена', а затем 'Начать'")
     keyboard = normalize_keyboard(buttons, 3)
     keyboard.add_line()
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
@@ -155,7 +155,7 @@ def new_record_doct_date(user_id):
             buttons.append(str(print_date))
             i=i+1
         #print(list(date))
-        send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена', а затем 'Начать'")
+        #send_message(user_id, "Если что-то пошло не так, напишите в чат 'Отмена', а затем 'Начать'")
         keyboard = normalize_keyboard(buttons, 4)
         keyboard.add_line()
         keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
@@ -308,7 +308,7 @@ def new_record_doct_time(user_id):
     keyboard.add_line()     
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
     '''
-    send_message(user_id, "Если что-то пошло не так, то напишите в чат 'Начать'")
+    #send_message(user_id, "Если что-то пошло не так, то напишите в чат 'Начать'")
     send_message(user_id, message_str, keyboard)
     
    
@@ -453,7 +453,7 @@ def new_record_end_end(message):
         send_message(user_id, "Ваша запись успешно создана")
         send_message(user_id, message_data)
     keyboard = VkKeyboard(one_time=True)
-    keyboard.add_button("Записаться", color=VkKeyboardColor.POSITIVE)
+    keyboard.add_button("Записаться на приём", color=VkKeyboardColor.POSITIVE)
     send_message(user_id, "Для новой записи напишите в чат '"'Начать'"', или нажмите на кнопку", keyboard)
 
 
@@ -517,7 +517,7 @@ for event in longpoll.listen():
             forms.update(event)
             continue
 
-        if event.text.lower() in ['начать','yfxfnm','отмена','jnvtyf', 'записаться на приём']: #Если написали заданную фразу
+        if event.text.lower() in ['начать','yfxfnm','отмена','jnvtyf', 'записаться на приём', 'записаться на прием']: #Если написали заданную фразу
             forms.start_form(user_id, "new_record_form")
         else:
            keyboard = VkKeyboard(one_time=True)
