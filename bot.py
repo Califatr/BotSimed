@@ -528,5 +528,5 @@ for event in longpoll.listen():
             forms.start_form(user_id, "new_record_form")
         else:
            keyboard = VkKeyboard(one_time=True)
-           keyboard.add_button("Записаться на приём.", color=VkKeyboardColor.POSITIVE)
+           keyboard.add_button("Записаться на приём", color=VkKeyboardColor.POSITIVE)
            send_message(user_id, "Для новой записи напишите в чат ''Начать'', или нажмите на кнопку ''Записаться на приём''.", keyboard) 
