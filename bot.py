@@ -374,7 +374,7 @@ def new_record_end(user_id):
 Телефон: {Phone},
 Фамилия: {lastName},
 Имя: {firstName},
-Отчетство: {middleName},
+Отчество: {middleName},
 Дата рождения: {birthdateconfirm}."""
 
 
