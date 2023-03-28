@@ -62,7 +62,7 @@
 					"next_field":"new_record_client_name",
 					"field_data": {
 						"type":"string",
-						"validation":"[а-яА-Я]{3,}"
+						"validation":"[а-яА-ЯёЁ]{3,}"
 					},
 					"custom_action":"new_record_client_lastname"
 				},
@@ -72,7 +72,7 @@
 					"next_field":"new_record_client_middlename",
 					"field_data": {
 						"type":"string",
-						"validation":"[а-яА-Я]{3,}"
+						"validation":"[а-яА-ЯёЁ]{3,}"
 					},
 					"custom_action":"new_record_client_name"
 				},
@@ -82,7 +82,7 @@
 					"next_field":"new_record_client_phone",
 					"field_data": {
 						"type":"string",
-						"validation":"[а-яА-Я]{3,}"
+						"validation":"[а-яА-ЯёЁ]{3,}"
 					},
 					"custom_action":"new_record_client_middlename"
 				},
