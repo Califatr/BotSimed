@@ -92,7 +92,7 @@
 					"next_field":"new_record_client_birth",
 					"field_data": {
 						"type":"string",
-						"validation":"\\d{10}"
+						"validation":"\\d{10}$"
 					},
 					"custom_action":"new_record_client_phone"
 				},
