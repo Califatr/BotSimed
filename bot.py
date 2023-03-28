@@ -351,8 +351,10 @@ def new_record_end(user_id):
     user_data = forms.user_data[user_id]["new_record_form"]
     time_obj =datetime.strptime(user_data["new_record_doct_time"], "%H:%M")
     doct_date = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%y")
+    doctdateconfirm = datetime.strptime(user_data["new_record_doct_date"], "%d-%m-%y")
     doct_date = doct_date.strftime("%Y-%m-%d")
     birth_date = datetime.strptime(user_data["new_record_client_birth"], "%d-%m-%Y")
+    birthdateconfirm = datetime.strptime(user_data["new_record_client_birth"], "%d-%m-%Y")
     birth_date = birth_date.strftime("%Y-%m-%d")
 
     Date=str(doct_date)
@@ -364,13 +366,13 @@ def new_record_end(user_id):
     lastName=user_data["new_record_client_lastname"]
     birthday= str(birth_date)
     
-    answer = f"""Дата:{Date}
+    answer = f"""Дата:{doctdateconfirm}
     Время: {timeInterval}
     Телефон: {Phone}
     Имя: {firstName}
     Фамилия: {middleName}
     Отчетство: {lastName}
-    Дата рождения: {birthday}"""
+    Дата рождения: {birthdateconfirm}"""
 
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Подтвердить", color=VkKeyboardColor.POSITIVE)
