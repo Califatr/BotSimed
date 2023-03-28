@@ -366,6 +366,9 @@ def new_record_end(user_id):
     birthday= str(birth_date)
     
     answer = f"""
+Специальность врача: {str(user_data["new_record_doctor"])},
+Медицинское учреждение: {str(user_data["new_record_place"])},
+Имя врача: {str(user_data["new_record_doct_name"])},
 Дата: {doctdateconfirm},
 Время: {timeInterval},
 Телефон: {Phone},
@@ -373,6 +376,7 @@ def new_record_end(user_id):
 Имя: {firstName},
 Отчетство: {middleName},
 Дата рождения: {birthdateconfirm}."""
+
 
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Подтвердить", color=VkKeyboardColor.POSITIVE)
@@ -443,10 +447,10 @@ def new_record_end_end(message):
     print(response.text)
     message_data = {
         "Вы записались на прием к врачу: " + '"'+str(user_data["new_record_doctor"])+'",'
-        +"\nВ медицинксое учреждение: "+ '"'+str(user_data["new_record_place"]+'",'
+        +"\nВ медицинское учреждение: "+ '"'+str(user_data["new_record_place"])+'",'
         +"\nК врачу: "'"'+str(user_data["new_record_doct_name"])+'",'
         +"\nДата приема: "'"'+str(user_data["new_record_doct_date"])+'",'
-        +"\nВремя приема: "'"'+str(user_data["new_record_doct_time"])+'".')
+        +"\nВремя приема: "'"'+str(user_data["new_record_doct_time"])+'".'
     }
     if response.text != 1:
         url = 'http://patient.simplex48.ru:81/api/Web/confirmationVK/1/'+str(response.text)
