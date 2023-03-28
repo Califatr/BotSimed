@@ -57,7 +57,7 @@ def new_record_place_buttons(user_id):
             doct_id = element["id"]
     forms.user_data[user_id]["new_record_form"]["doct_id"] = doct_id
     print (doct_id)
-    bralist = "Выберите Поликлинику:\n"
+    bralist = "Выберите поликлинику:\n"
     url = "https://patient.simplex48.ru/api/Web/clinic/1/"+str(doct_id)
     response = requests.request("GET", url)
     keyboard = VkKeyboard(one_time=True)
@@ -77,13 +77,13 @@ def new_record_place_buttons(user_id):
         for element in response.json():
             buttons.append(str(element["name"]))
     else:
-        send_message(user_id, "Доступных поликлинник для записи нет. Нажмите кнопку ''Отмена'' и попробуйте позже. Для новой записи напишите ''Начать'' в чат.")
+        send_message(user_id, "Доступных поликлиник для записи нет. Нажмите кнопку ''Отмена'' и попробуйте позже. Для новой записи напишите ''Начать'' в чат.")
     #send_message(user_id, "Если в процессе записи что-то пойдет не так, напишите в чат 'Отмена', а затем 'Начать'")
     keyboard = normalize_keyboard(buttons, 2)
     keyboard.add_line()
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-    send_message(user_id, "Выберите поликлиннику, в которую хотите записаться:", keyboard)
+    send_message(user_id, "Выберите поликлинику, в которую хотите записаться:", keyboard)
 
 def new_record_doct_name(user_id):  
     url = "https://patient.simplex48.ru/api/Web/clinic/1/"+str(forms.user_data[user_id]["new_record_form"]["doct_id"])
@@ -446,11 +446,11 @@ def new_record_end_end(message):
     #send_message(message.user_id, str(response.text))
     print(response.text)
     message_data = {
-        "Вы записались на прием к врачу: " + '"'+str(user_data["new_record_doctor"])+'",'
-        +"\nВ медицинское учреждение: "+ '"'+str(user_data["new_record_place"])+'",'
-        +"\nК врачу: "'"'+str(user_data["new_record_doct_name"])+'",'
-        +"\nДата приема: "'"'+str(user_data["new_record_doct_date"])+'",'
-        +"\nВремя приема: "'"'+str(user_data["new_record_doct_time"])+'".'
+        "Вы записались на прием к врачу: "+str(user_data["new_record_doctor"])+','
+        +"\nВ медицинское учреждение: "+str(user_data["new_record_place"])+','
+        +"\nК врачу: "+str(user_data["new_record_doct_name"])+','
+        +"\nДата приема: "+str(user_data["new_record_doct_date"])+','
+        +"\nВремя приема: "+str(user_data["new_record_doct_time"])+'.'
     }
     if response.text != 1:
         url = 'http://patient.simplex48.ru:81/api/Web/confirmationVK/1/'+str(response.text)
