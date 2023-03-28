@@ -38,7 +38,7 @@
 				},
 				"new_record_doct_date" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Дата должна быть в формате 27.03.23. Повторите попытку снова.",
+					"validation_error": "Дата должна быть в формате ДД.ММ.ГГ. Повторите попытку снова.",
 					"next_field":"new_record_doct_time",
 					"field_data": {
 						"type":"string",
@@ -88,7 +88,7 @@
 				},
 				"new_record_client_phone" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Номер телефона должен быть в формате 9205109523. Повторите попытку снова.",
+					"validation_error": "Номер телефона должен быть без кода страны, в формате 9205109523. Повторите попытку снова.",
 					"next_field":"new_record_client_birth",
 					"field_data": {
 						"type":"string",
@@ -98,7 +98,7 @@
 				},
 				"new_record_client_birth" : {
 					"message": "NOT USED HERE",
-					"validation_error": "Дата рождения должна быть в формате 26.09.2001. Повторите попытку снова.",
+					"validation_error": "Дата рождения должна быть в формате ДД.ММ.ГГГГ. Повторите попытку снова.",
 					"next_field":"new_record_end",
 					"field_data": {
 						"type":"string",
