@@ -278,14 +278,10 @@ def new_record_doct_time(user_id):
     for worker in root.workers:
         if len(worker.schedule[0].cells) != 0:
             buttons = []
-            for cell in worker.schedule[0].cells:
-                print_date = datetime.strptime(doct_date, "%Y-%m-%d")
-                print_date = print_date.strftime("%d-%m")
-                if datetime.now().strftime("%d-%m") == print_date:
-                    if datetime.strptime(cell.time_start, "%H:%M") <= datetime.now():
-                        continue
 
-                buttons.append(cell.time_start)
+            for cell in worker.schedule[0].cells:
+                if cell.free == True:
+                    buttons.append(cell.time_start)
 
     if len(buttons) == 0:
         message_str = "Простите, но на этот день больше не проводится запись"
