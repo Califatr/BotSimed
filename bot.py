@@ -337,14 +337,14 @@ def new_record_client_phone(user_id):
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-    send_message(user_id, "Введите Ваш номер телефона без кода страны, например 9505908070.",keyboard)
+    send_message(user_id, "Введите Ваш номер телефона без кода страны, например: 9505908070.",keyboard)
     
 
 def new_record_client_birth(user_id):
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY)
     keyboard.add_button("Отмена", color=VkKeyboardColor.NEGATIVE)
-    send_message(user_id, "Введите дату рождения, в формате ДД.ММ.ГГГГ, \nнапример 01.01.2000.",keyboard) 
+    send_message(user_id, "Введите дату рождения, в формате ДД.ММ.ГГГГ, например: 01.01.2000.",keyboard) 
 
 def new_record_end(user_id):
     user_data = forms.user_data[user_id]["new_record_form"]
