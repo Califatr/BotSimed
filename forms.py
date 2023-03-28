@@ -1,5 +1,6 @@
 import json
 import re
+from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 default_keyboard = None
 end_handlers = {}
@@ -99,6 +100,9 @@ def handle_form_field(message, form_name, form_field):
 	print(f"Текущее поле: {form_field}")
 	if message.text.lower() == "отмена":
 		cancel_form(message.user_id)
+		keyboard = VkKeyboard(one_time=True)
+		keyboard.add_button("Записаться на приём", color=VkKeyboardColor.POSITIVE)
+		send_message(message.user_id, "Запись отменена", keyboard)
 		return
 	if message.text.lower() == "назад":
 		if form_field == "new_record_doct_name":
